@@ -7,9 +7,10 @@ namespace DemoApplication.MVC.Models
     {
         [Key]
         public Guid Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "First Name of the student is essential")]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
+        [Required(ErrorMessage = "Last Name of the student is essential")]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
         [Display(Name = "Date of Birth")]

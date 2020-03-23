@@ -71,14 +71,14 @@ namespace DemoApplication.Test.TestController
             moqStudents.Setup(repo => repo.GetById(NewID)).Returns(MocGetStudentsById(NewID));
 
             // Act
-            var result = studentsController.Details(NewID).Result;
+            var result = studentsController.Edit(NewID).Result;
 
             //Assert
-            var viewResult = result as ViewResult;
+            var viewResult = result as PartialViewResult;
             var model = viewResult.Model as Student;
             Assert.Multiple(() =>
             {
-                Assert.IsInstanceOf<ViewResult>(result);
+                Assert.IsInstanceOf<PartialViewResult>(result);
                 Assert.That(model, Is.TypeOf<Student>());
             });
         }

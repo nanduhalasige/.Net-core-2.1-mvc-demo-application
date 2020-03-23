@@ -4,7 +4,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <h5 class="modal-title">Add new Student</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -15,35 +15,35 @@
                         <form asp-action="Create">
                             <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
                             <div class="form-group">
-                                <label asp-for="FirstName" class="control-label"></label>
+                                <label asp-for="FirstName" class="control-label font-weight-bold"></label>
                                 <input asp-for="FirstName" class="form-control" required />
                                 <span asp-validation-for="FirstName" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="LastName" class="control-label"></label>
+                                <label asp-for="LastName" class="control-label font-weight-bold"></label>
                                 <input asp-for="LastName" class="form-control" required />
                                 <span asp-validation-for="LastName" class="text-danger"></span>
                             </div>
                             <div>
-                                <label asp-for="Dob" class="control-label"></label>
+                                <label asp-for="Dob" class="control-label font-weight-bold"></label>
 
                                 <div class="form-group">
-                                    <div class="input-group">
+                                    <div class="input-group date" data-provide="datepicker">
                                         <input type="text" asp-for="Dob" class="form-control" required>
                                         <div class="input-group-append">
-                                            <span class="input-group-text" id="basic-addon2"><i class="fas fa-th"></i></span>
+                                            <span class="input-group-text" id="basic-addon2"><i class="fa fa-calendar pointer" aria-hidden="true"></i></span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <label>
-                                        <input asp-for="Active" checked /> @Html.DisplayNameFor(model => model.Active)
-                                    </label>
-                                </div>
-                            </div>
+                            @*<div class="form-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input asp-for="Active" checked /> @Html.DisplayNameFor(model => model.Active)
+                                        </label>
+                                    </div>
+                                </div>*@
                             @*<div class="form-group fa-pull-right">
                                     <button type="submit" class="btn btn-outline-info mr-2"><i class="far fa-save"></i> Save</button>
                                     <button type="reset" class="btn btn-outline-info mr-2" data-dismiss="modal"><i class="far fa-close"></i> Cancel</button>
@@ -61,14 +61,13 @@
 </div>
 
 
-
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        $(document).ready(function () {
-            $('.datepicker').datepicker();
-
+<script>
+    $(document).ready(function () {
+        $('.date').datepicker({
+            autoclose: true,
+            endDate: '0d'
         });
-    </script>
-}
+    });
+</script>
+
+

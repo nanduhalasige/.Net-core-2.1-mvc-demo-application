@@ -31,11 +31,12 @@ namespace DemoApplication.MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Dob,Active")] Student student)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Dob")] Student student)
         {
             if (ModelState.IsValid)
             {
                 student.Id = Guid.NewGuid();
+                student.Active = true;
                 await studentRepository.Add(student);
                 return RedirectToAction(nameof(Index)).WithSuccess("Successfull...!", "Student added successfully"); ;
             }

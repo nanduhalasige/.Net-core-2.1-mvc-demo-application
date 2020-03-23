@@ -5,14 +5,18 @@
 }
 
 <div class="container-fluid">
+    @*Enable it for JQuery Dialog box*@
+    @*<div class="row mb-2 mt-2 mr-3 justify-content-end">
+            <button class="btn btn-outline-info" onclick="AddNewStudent()"><i class="fas fa-plus"></i>  Add New Student</button>
+        </div>*@
+
+    <!-- Button trigger bootstrap modal -->
     <div class="row mb-2 mt-2 mr-3 justify-content-end">
-        <button class="btn btn-outline-info" onclick="AddNewStudent()"><i class="fas fa-plus"></i>  Add New Student</button>
+        <button class="btn btn-outline-info" data-target="#add-new-student-Modal" data-toggle="ajax-modal" data-url="@Url.Action("Create","Students")">
+            <i class="fas fa-plus"></i>  Add New Student
+        </button>
     </div>
 
-    <!-- Button trigger modal -->
-    <button class="btn btn-outline-info" data-target="#add-new-student-Modal" data-toggle="ajax-modal" data-url="@Url.Action("Create","Students")">
-        <i class="fas fa-plus"></i>  Add New Student
-    </button>
     <div id="modal-placeholder"></div>
 
     <div class="table-custom p-3" style="width: 100%;">
@@ -103,9 +107,10 @@
             });
         });
 
+        @*Enable it for JQuery Dialog box
         function AddNewStudent() {
             CommonDialog('sm', 'Add New Student', "@Url.Action("Create","Students")")
-        }
+        }*@
 
         function UpdateStudentDialog(id) {
             CommonDialog('sm', 'Add New Student', "@Url.Action("Edit","Students")/"+id)
