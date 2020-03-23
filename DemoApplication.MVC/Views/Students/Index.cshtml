@@ -1,0 +1,132 @@
+﻿@model IEnumerable<DemoApplication.MVC.Models.Student>
+
+@{
+    var students = Model;
+}
+
+<div class="container-fluid">
+    <div class="row mb-2 mt-2 mr-3 justify-content-end">
+        <button class="btn btn-outline-info" onclick="AddNewStudent()"><i class="fas fa-plus"></i>  Add New Student</button>
+    </div>
+
+    <!-- Button trigger modal -->
+    <button class="btn btn-outline-info" data-target="#add-new-student-Modal" data-toggle="ajax-modal" data-url="@Url.Action("Create","Students")">
+        <i class="fas fa-plus"></i>  Add New Student
+    </button>
+    <div id="modal-placeholder"></div>
+
+    <div class="table-custom p-3" style="width: 100%;">
+        <table class="table table-striped table-bordered text-center" id="studentTable" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LastName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Dob)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Active)
+                    </th>
+                    <th width="50">Edit</th>
+                    <th width="50">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.FirstName
+                        </td>
+                        <td>
+                            @item.LastName
+                        </td>
+                        <td>
+                            @item.Dob.ToShortDateString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Active)
+                        </td>
+                        <td>
+                            <a role="button" class="text-info pointer" title="Edit" onclick="UpdateStudentDialog('@item.Id')">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a role="button" class="text-info pointer" title="Delete" onclick="DeleteConfirmation('@item.Id')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function () {
+            $('#studentTable').DataTable();
+
+            var placeholderElement = $('#modal-placeholder');
+            $('button[data-toggle="ajax-modal"]').click(function (event) {
+                var url = $(this).data('url');
+                $.get(url).done(function (data) {
+                    placeholderElement.html(data);
+                    placeholderElement.find('.modal').modal('show');
+                });
+            });
+
+            placeholderElement.on('click', '[data-save="modal"]', function (event) {
+                event.preventDefault();
+
+                var form = $(this).parents('.modal').find('form');
+                var actionUrl = form.attr('action');
+                var dataToSend = form.serialize();
+
+                $.post(actionUrl, dataToSend).done(function (data) {
+                    var newBody = $('.modal-body', data);
+                    placeholderElement.find('.modal-body').replaceWith(newBody);
+
+                    var isValid = newBody.find('[name="IsValid"]').val() == 'True';
+                    if (isValid) {
+                        placeholderElement.find('.modal').modal('hide');
+                    }
+                });
+            });
+        });
+
+        function AddNewStudent() {
+            CommonDialog('sm', 'Add New Student', "@Url.Action("Create","Students")")
+        }
+
+        function UpdateStudentDialog(id) {
+            CommonDialog('sm', 'Add New Student', "@Url.Action("Edit","Students")/"+id)
+        }
+
+        function DeleteConfirmation(id) {
+            $.confirm({
+                title: 'Delete Student?',
+                content: 'This dialog will automatically trigger \'cancel\' in 6 seconds if you don\'t respond.',
+                autoClose: 'cancel|8000',
+                buttons: {
+                    deletestudent: {
+                        text: 'Delete',
+                        action: function () {
+                            $.post("@Url.Action("DeleteConfirmed", "Students")/" + id);
+                        }
+                    },
+                    cancel: function () {
+                    }
+                }
+            });
+        }
+    </script>
+}
