@@ -38,7 +38,7 @@ namespace DemoApplication.MVC.Controllers
                 student.Id = Guid.NewGuid();
                 student.Active = true;
                 await studentRepository.Add(student);
-                return RedirectToAction(nameof(Index)).WithSuccess("Successfull...!", "Student added successfully"); ;
+                //return RedirectToAction(nameof(Index)).WithSuccess("Successfull...!", "Student added successfully");
             }
             return PartialView("_Create", student);
         }
@@ -46,7 +46,7 @@ namespace DemoApplication.MVC.Controllers
         public async Task<IActionResult> Edit(Guid id)
         {
             var student = await studentRepository.GetById(id);
-            return PartialView(student);
+            return PartialView("_Edit", student);
         }
 
         [HttpPost]
@@ -68,7 +68,7 @@ namespace DemoApplication.MVC.Controllers
                 {
                     throw;
                 }
-                return RedirectToAction(nameof(Index));
+                //return PartialView("_Edit", student).WithSuccess("Successfull...!", "Student updates successfully");
             }
             return PartialView("_Edit", student);
         }

@@ -56,7 +56,7 @@
                             @Html.DisplayFor(modelItem => item.Active)
                         </td>
                         <td>
-                            <a role="button" class="text-info pointer" title="Edit" onclick="UpdateStudentDialog('@item.Id')">
+                            <a role="button" class="text-info pointer" data-target="#edit-student-Modal" data-toggle="ajax-modal" data-url="@Url.Action("Edit","Students")/@item.Id" title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
                         </td>
@@ -88,6 +88,14 @@
                 });
             });
 
+            $('a[data-toggle="ajax-modal"]').click(function (event) {
+                var url = $(this).data('url');
+                $.get(url).done(function (data) {
+                    placeholderElement.html(data);
+                    placeholderElement.find('.modal').modal('show');
+                });
+            });
+
             placeholderElement.on('click', '[data-save="modal"]', function (event) {
                 event.preventDefault();
 
@@ -102,19 +110,20 @@
                     var isValid = newBody.find('[name="IsValid"]').val() == 'True';
                     if (isValid) {
                         placeholderElement.find('.modal').modal('hide');
+                        window.location.href = "/Students/Index";
                     }
                 });
             });
         });
 
-        @*Enable it for JQuery Dialog box
-        function AddNewStudent() {
+        //Enable it for JQuery Dialog box
+        @*function AddNewStudent() {
             CommonDialog('sm', 'Add New Student', "@Url.Action("Create","Students")")
-        }*@
+        }
 
         function UpdateStudentDialog(id) {
             CommonDialog('sm', 'Add New Student', "@Url.Action("Edit","Students")/"+id)
-        }
+        }*@
 
         function DeleteConfirmation(id) {
             $.confirm({
