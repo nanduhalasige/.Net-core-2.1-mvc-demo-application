@@ -45,7 +45,14 @@
                             @item.Dob.ToShortDateString()
                         </td>
                         <td>
-                            @item.Active.ToString()
+                            @if (item.Active)
+                            {
+                                <i class="fas fa-check text-success"></i>
+                            }
+                            else
+                            {
+                                <i class="far fa-times-circle text-danger"></i>
+                            }
                         </td>
                         <td>
                             <a role="button"
