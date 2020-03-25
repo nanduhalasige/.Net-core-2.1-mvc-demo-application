@@ -39,28 +39,37 @@ namespace DemoApplication.MVC.Controllers
         private async Task<CurrencyEx> GetCurrencyRates()
         {
             var currencyEx = new CurrencyEx();
-            var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync("https://api.exchangeratesapi.io/latest?symbols=INR").Result.Content.ReadAsStringAsync();
-            //"{\"rates\":{\"INR\":81.8765},\"base\":\"EUR\",\"date\":\"2020-03-13\"}"
-
-            Regex pattern = new Regex("[}{]");
-            response = pattern.Replace(response, "");
-            var split = response.Split(",").ToList();
-            split.ForEach(x =>
+            try
             {
-                if (x.Contains("INR"))
+                var httpClient = new HttpClient();
+                var response = await httpClient.GetAsync("https://api.exchangeratesapi.io/latest?symbols=INR").Result.Content.ReadAsStringAsync();
+                //"{\"rates\":{\"INR\":81.8765},\"base\":\"EUR\",\"date\":\"2020-03-13\"}"
+
+                Regex pattern = new Regex("[}{]");
+                response = pattern.Replace(response, "");
+                var split = response.Split(",").ToList();
+                split.ForEach(x =>
                 {
-                    currencyEx.TargetCurrency = x.Split(":")[2].ToString();
-                }
-                else if (x.Contains("date"))
-                {
-                    currencyEx.LastUpdated = x.Split(":")[1].Replace("\\", "").ToString();
-                }
-                else if (x.Contains("base"))
-                {
-                    currencyEx.BaseCurrency = x.Split(":")[1].Replace("\\", "").ToString();
-                }
-            });
+                    if (x.Contains("INR"))
+                    {
+                        currencyEx.TargetCurrency = x.Split(":")[2].ToString();
+                    }
+                    else if (x.Contains("date"))
+                    {
+                        currencyEx.LastUpdated = x.Split(":")[1].Replace("\\", "").ToString();
+                    }
+                    else if (x.Contains("base"))
+                    {
+                        currencyEx.BaseCurrency = x.Split(":")[1].Replace("\\", "").ToString();
+                    }
+                });
+            }
+            catch
+            {
+                currencyEx.BaseCurrency = "EUR";
+                currencyEx.LastUpdated = DateTime.Now.ToString();
+                currencyEx.TargetCurrency = "00.0";
+            }
             return currencyEx;
         }
 

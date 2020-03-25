@@ -3,9 +3,7 @@
         <span class="d-block d-lg-none">Nandan Hegde</span>
         <img src="~/asset/logo.png" alt="Logo" height="40" />
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
@@ -37,24 +35,26 @@
             </li>
 
         </ul>
-        <ul class="navbar-nav float-right">
-            <li class="nav-item">
-                <a class="nav-link pointer" role="button" onclick="SignInDialog()">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Sign in / Sign Up
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Configurations" ? "nav-link active" : "nav-link")"
-                   asp-action="Index"
-                   asp-controller="Configurations">
-                    <i class="fa fa-cog">
-                    </i>
-                    Configuration
-                </a>
-            </li>
-        </ul>
     </div>
+    <ul class="navbar-nav float-right">
+        <li class="nav-item d-inline">
+            <a class="nav-link pointer" title="Login" role="button" onclick="SignInDialog()">
+                <i class="fas fa-user"></i>
+
+            </a>
+        </li>
+        <li class="nav-item d-inline">
+            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Configurations" ? "nav-link active" : "nav-link")"
+               asp-action="Index"
+               asp-controller="Configurations" title="Configuration">
+                <i class="fa fa-cog">
+                </i>
+            </a>
+        </li>
+    </ul>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-ellipsis-v"></i>
+    </button>
 </nav>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

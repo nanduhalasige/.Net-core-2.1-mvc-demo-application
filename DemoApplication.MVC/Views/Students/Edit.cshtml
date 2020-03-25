@@ -1,0 +1,53 @@
+﻿@model DemoApplication.MVC.Models.Student
+<div class="row">
+    <div class="col-md-6 m-2">
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label font-weight-bold"></label>
+                <input asp-for="FirstName" class="form-control" required />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label font-weight-bold"></label>
+                <input asp-for="LastName" class="form-control" required />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div>
+                <div class="form-group">
+                    <label asp-for="Dob" class="control-label font-weight-bold"></label>
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type="text" asp-for="Dob" class="form-control" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="basic-addon2"><i class="fa fa-calendar pointer" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group fa-pull-right">
+                <button type="submit" class="btn btn-outline-info mr-2"><i class="far fa-save"></i> Update</button>
+                <button type="reset" class="btn btn-outline-info mr-2" asp-action="Edit" asp-controller="Students"><i class="fas fa-times"></i> Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('.date').datepicker({
+            autoclose: true,
+            endDate: '0d'
+        });
+    });
+</script>
+
+

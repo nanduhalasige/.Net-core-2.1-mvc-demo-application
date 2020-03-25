@@ -5,16 +5,8 @@
 }
 
 <div class="container-fluid">
-    @*Enable it for JQuery Dialog box*@
-    @*<div class="row mb-2 mt-2 mr-3 justify-content-end">
-            <button class="btn btn-outline-info" onclick="AddNewStudent()"><i class="fas fa-plus"></i>  Add New Student</button>
-        </div>*@
-
-    <!-- Button trigger bootstrap modal -->
     <div class="row mb-2 mt-2 mr-3 justify-content-end">
-        <button class="btn btn-outline-info" data-target="#add-new-student-Modal" data-toggle="ajax-modal" data-url="@Url.Action("Create","Students")">
-            <i class="fas fa-plus"></i>  Add New Student
-        </button>
+        <a role="button" class="btn btn-outline-info" asp-action="Create" asp-controller="Students"><i class="fas fa-plus"></i>  Add New Student</a>
     </div>
 
     <div id="modal-placeholder"></div>
@@ -53,15 +45,25 @@
                             @item.Dob.ToShortDateString()
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Active)
+                            @item.Active.ToString()
                         </td>
                         <td>
-                            <a role="button" class="text-info pointer" data-target="#edit-student-Modal" data-toggle="ajax-modal" data-url="@Url.Action("Edit","Students")/@item.Id" title="Edit">
+                            <a role="button"
+                               class="text-info pointer"
+                               asp-action="Edit"
+                               asp-controller="Students"
+                               asp-route-Id="@item.Id"
+                               title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
                         </td>
                         <td>
-                            <a role="button" class="text-info pointer" title="Delete" onclick="DeleteConfirmation('@item.Id')">
+                            <a role="button" class="text-info pointer"
+                               title="Delete"
+                               asp-action="DeleteConfirmed"
+                               asp-controller="Students"
+                               asp-route-Id="@item.Id"
+                               onclick="return confirm('Are you sure want to delete the student')">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </td>
@@ -78,69 +80,6 @@
     <script>
         $(document).ready(function () {
             $('#studentTable').DataTable();
-
-            var placeholderElement = $('#modal-placeholder');
-            $('button[data-toggle="ajax-modal"]').click(function (event) {
-                var url = $(this).data('url');
-                $.get(url).done(function (data) {
-                    placeholderElement.html(data);
-                    placeholderElement.find('.modal').modal('show');
-                });
-            });
-
-            $('a[data-toggle="ajax-modal"]').click(function (event) {
-                var url = $(this).data('url');
-                $.get(url).done(function (data) {
-                    placeholderElement.html(data);
-                    placeholderElement.find('.modal').modal('show');
-                });
-            });
-
-            placeholderElement.on('click', '[data-save="modal"]', function (event) {
-                event.preventDefault();
-
-                var form = $(this).parents('.modal').find('form');
-                var actionUrl = form.attr('action');
-                var dataToSend = form.serialize();
-
-                $.post(actionUrl, dataToSend).done(function (data) {
-                    var newBody = $('.modal-body', data);
-                    placeholderElement.find('.modal-body').replaceWith(newBody);
-
-                    var isValid = newBody.find('[name="IsValid"]').val() == 'True';
-                    if (isValid) {
-                        placeholderElement.find('.modal').modal('hide');
-                        window.location.href = "/Students/Index";
-                    }
-                });
-            });
         });
-
-        //Enable it for JQuery Dialog box
-        @*function AddNewStudent() {
-            CommonDialog('sm', 'Add New Student', "@Url.Action("Create","Students")")
-        }
-
-        function UpdateStudentDialog(id) {
-            CommonDialog('sm', 'Add New Student', "@Url.Action("Edit","Students")/"+id)
-        }*@
-
-        function DeleteConfirmation(id) {
-            $.confirm({
-                title: 'Delete Student?',
-                content: 'This dialog will automatically trigger \'cancel\' in 6 seconds if you don\'t respond.',
-                autoClose: 'cancel|8000',
-                buttons: {
-                    deletestudent: {
-                        text: 'Delete',
-                        action: function () {
-                            $.post("@Url.Action("DeleteConfirmed", "Students")/" + id);
-                        }
-                    },
-                    cancel: function () {
-                    }
-                }
-            });
-        }
     </script>
 }

@@ -25,7 +25,7 @@ namespace DemoApplication.MVC.Controllers
 
         public IActionResult Create()
         {
-            return PartialView("_Create");
+            return View();
         }
 
 
@@ -38,15 +38,15 @@ namespace DemoApplication.MVC.Controllers
                 student.Id = Guid.NewGuid();
                 student.Active = true;
                 await studentRepository.Add(student);
-                //return RedirectToAction(nameof(Index)).WithSuccess("Successfull...!", "Student added successfully");
+                return RedirectToAction(nameof(Index)).WithSuccess("Successfull...!", "Student added successfully");
             }
-            return PartialView("_Create", student);
+            return View(student);
         }
 
         public async Task<IActionResult> Edit(Guid id)
         {
             var student = await studentRepository.GetById(id);
-            return PartialView("_Edit", student);
+            return View(student);
         }
 
         [HttpPost]
@@ -63,18 +63,16 @@ namespace DemoApplication.MVC.Controllers
                 try
                 {
                     await studentRepository.Update(student);
+                    return RedirectToAction(nameof(Index)).WithSuccess("Successfull...", "Student details updated successfully");
                 }
                 catch
                 {
                     throw;
                 }
-                //return PartialView("_Edit", student).WithSuccess("Successfull...!", "Student updates successfully");
             }
-            return PartialView("_Edit", student);
+            return View(student);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var IsDeleted = await studentRepository.HardDelete(id);
