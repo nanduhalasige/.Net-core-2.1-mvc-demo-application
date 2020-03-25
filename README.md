@@ -1,4 +1,5 @@
-# .Net core 2.1 MVC demo application
+# ASP.Net core MVC demo application
+###### .Net Core 2.1
 
 ## An application developed in ASP.Net core MVC with Razor views, Bootstrap and jQuery. 
 
